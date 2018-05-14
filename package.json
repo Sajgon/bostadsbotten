@@ -1,0 +1,8 @@
+{
+  "name": "ExpressChatExample",
+  "version": "0.0.1",
+  "description": "Hello World with Express",
+  "dependencies": {
+    "express": "*"
+  }
+}
