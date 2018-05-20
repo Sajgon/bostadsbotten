@@ -29,3 +29,30 @@ body {
 .spacer {
   height:40px;
 }
+
+.property {
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
+  max-width: 150px;
+  padding: 10px;
+  margin: 10px;
+}
+
+/* button */
+.btn {
+  background-color: inherit;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  border-style: solid;
+  border-width: 2px;
+  margin-left: 15px;
+}
+
+/* On mouse-over */
+.btn:hover {
+  background: #eee;
+}
+
