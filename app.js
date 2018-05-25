@@ -24,9 +24,10 @@ var cindex = 0;
 
 var state = [
     {   "step": "introduction",
-        "options": ["Hitta bostad", "Slumpa bostad"],
+        "options": ["Hitta bostad"],
         "message": "Hejsan! Jag är en simpel chattbot som gärna hjälper dig att hitta ditt drömboende. För nuvarande kan jag hjälpa dig att.." ,
-        "err": "Vänligen välj att 'hitta bostad' eller 'slumpa bostad'."},
+        "err": "Vänligen välj 'hitta bostad' för att komma igång.",
+        "value":undefined},
 
     {   "step": "city",
         "message": "Vilken stad vill du hitta boende i?",
@@ -53,17 +54,11 @@ var state = [
         "value":undefined}
 ];
 
-messages.push({
-    name: "Bostadsbotten",
-    time: new Date().getTime(),
-    text: state[0].message,
-    options: state[0].options
-});
-
-
 function botResponse(value) {
 
     if (value) { value = capitalizeFirstLetter(value.toLowerCase()); }
+    if (value === "Återställ") {return reset();}
+
     let st = state[cindex];
 
     // Value handler
@@ -86,7 +81,7 @@ function botResponse(value) {
     if (st){
         state[cindex].value = value;
         messages.push({
-            name: "BOT",
+            name: "Bostadsbotten",
             time: new Date().getTime(),
             options: st.options || false,
             text: st.message
@@ -97,7 +92,7 @@ function botResponse(value) {
         let propertiesObj = generateLiving(state);
         let txt = propertiesObj.length>0 ? "Vi fann dessa object" : "Tyvrr finns det inga lediga object enligt dina kriterier.";
         messages.push({
-            name: "BOT",
+            name: "Bostadsbotten",
             time: new Date().getTime(),
             text: txt,
             properties: propertiesObj
@@ -110,17 +105,35 @@ function botResponse(value) {
 
 
 
+function reset() {
+
+    cindex = 0;
+    messages = [];
+    messages.push({
+        name: "Bostadsbotten",
+        time: new Date().getTime(),
+        text: state[0].message,
+        options: state[0].options
+    });
+
+    state.forEach(function(object) {
+        object.value = undefined;
+    });
+}
+
+// Initiate with a reset of the application
+reset();
+
 
 
 
 function generateLiving(st) {
     //console.log("st",st)
     var objects = [];
-console.log("goes")
     objects = data.filter(function(obj){
 
         var meetsRequirements = true;
-        for (i in st) {
+        for (var i in st) {
             var inputObj = st[i];
             var dataValue = obj[inputObj.step];
 
@@ -140,12 +153,9 @@ console.log("goes")
             if (meetsRequirements === false){break;}
         }
 
-        console.log("meetsRequirements", meetsRequirements)
         return meetsRequirements;
     });
 
-
-    console.log("objects", objects)
     return objects;
 }
 
@@ -153,7 +163,7 @@ console.log("goes")
 
 // Testfunction
 function runTest() {
-    console.log("Running test..")
+    console.log("#TestRun")
     let st = state;
     for(var i=1;i<state.length;i++){
 
